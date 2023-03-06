@@ -1,47 +1,11 @@
 pipeline {
-  agent none
+  agent any
   stages {
-    stage('Prep') {
-      steps {
-        sh 'printenv'
-      }
-    }
-    stage('Test') {
-      steps {
-        parallel(
-          "Unit": {
-            sh '''
-              echo "unit testing..."
-            '''
-          },
-          "Lint": {
-            sh '''
-               echo "linting..."
-            '''
-          }
-          ,
-          "Functional": {
-            sh '''
-              echo "runing functional tests..."
-            '''
-          }
-        )
-      }
-    }
-    stage('Build') {
+    stage('Build and Push') {
       steps {
         sh '''
-          echo "compiling...  compiling..."
-        '''
-      }
-    }
-    stage('Deploy') {
-      when {
-        branch 'master'
-      }
-      steps {
-        sh '''
-          echo "deploying..."
+          echo "Build and Push"
+          docker build ./app/Dockerfile
         '''
       }
     }
