@@ -5,7 +5,7 @@ pipeline {
       steps {
         sh '''
           echo "Build and Push"
-          sudo docker build -t <dockerhubusername>/<dockerhubreponame>:$BUILD_NUMBER ./app/Dockerfile
+          sudo docker build -t temp/app:$BUILD_NUMBER ./app/Dockerfile
         '''
       }
     }
