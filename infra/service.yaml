@@ -15,3 +15,7 @@ spec:
     - port: 8080
       targetPort: 8080
       nodePort: 32000
+      name: jenkins-master
+    - port: 50000
+      targetPort: 50000
+      name: jenkins-jnlp
