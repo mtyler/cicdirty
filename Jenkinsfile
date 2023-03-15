@@ -5,7 +5,8 @@ pipeline {
       steps {
         sh '''
           echo "Build and Push"
-          docker build -t temp/app:$BUILD_NUMBER $WORKSPACE/app/Dockerfile
+          cd $WORKSPACE/app
+          docker build -t temp/app:$BUILD_NUMBER Dockerfile
         '''
       }
     }
