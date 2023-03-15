@@ -8,8 +8,10 @@ pipeline {
       steps {
         sh '''
           echo "Build and Push"
-          docker build -t temp/app:$BUILD_NUMBER $WORKSPACE/app
-          docker login -u bbwcr -p $BBWCR_KEY bbwcr.azurecr.io
+          ACR=bbwcr.azurecr.io
+          docker build -t $ACR/app:$BUILD_NUMBER $WORKSPACE/app
+          docker login -u bbwcr -p $BBWCR_KEY $ACR
+          docker push $ACR/app:$BUILD_NUMBER
         '''
       }
     }
