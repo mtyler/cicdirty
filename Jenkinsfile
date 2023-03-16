@@ -33,7 +33,8 @@ pipeline {
       steps {
         sh '''
           echo "Smoke Test"
-          curl https://$(kubectl get svc --namespace qa --output jsonpath='{.status.loadBalancer.ingress[0].ip}'):8080
+          IP=kubectl get svc --namespace qa --output jsonpath='{.status.loadBalancer.ingress[0].ip}'
+          curl https://$IP:8080
         '''
       }
     }
