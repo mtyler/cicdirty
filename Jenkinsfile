@@ -40,7 +40,7 @@ pipeline {
         }
         sh '''
           echo "Smoke Test"
-          curl https://$SVC_IP:8080
+          curl https://${SVC_IP}:8080
         '''
       }
     }
