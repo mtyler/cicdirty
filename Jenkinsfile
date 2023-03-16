@@ -42,10 +42,18 @@ pipeline {
         //    sh 'curl https://${SVC_IP}:8080' 
 //
         //}
-        sh '''
-          SVC_IP = kubectl get svc --namespace qa app --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"
-          curl https://${SVC_IP}:8080 
-        '''
+        //sh '''
+        //  SVC_IP = kubectl get svc --namespace qa app --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"
+        //  curl https://${SVC_IP}:8080 
+        //'''
+        script {
+          echo "Smoke Test"
+          SVC_IP = sh (
+                script: 'curl https://$(kubectl get svc --namespace qa app --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"):8080',
+                returnStdout: true
+            ).trim()
+            echo "svc ip: ${SVC_IP}"
+        }
       }
     }
   }
