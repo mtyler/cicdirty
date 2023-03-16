@@ -25,7 +25,7 @@ pipeline {
           az aks get-credentials -g $RGROUP -n $AKS 
           kubectl cluster-info
           mkdir -p $WORKSPACE/build
-          helm package -d $WORKSPACE/build $WORKSPACE/build/app
+          helm package -d $WORKSPACE/build $WORKSPACE/app
           helm lint --debug $WORKSPACE/app/Chart.yaml --strict --values $WORKSPACE/app/env/values-qa.yaml
           helm upgrade app app/ --install --create-namespace -n qa -f $WORKSPACE/app/env/values-qa.yaml
         '''
