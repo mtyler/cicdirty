@@ -31,10 +31,16 @@ pipeline {
     }
     stage('Smoke Test') {
       steps {
+        script {
+           SVC_IP = sh (
+                script: "kubectl get svc --namespace qa --output jsonpath='{.status.loadBalancer.ingress[0].ip}'",
+                returnStdout: true
+            ).trim()
+            echo "svc ip: ${SVC_IP}"
+        }
         sh '''
           echo "Smoke Test"
-          IP=kubectl get svc --namespace qa --output jsonpath='{.status.loadBalancer.ingress[0].ip}'
-          curl https://$IP:8080
+          curl https://$SVC_IP:8080
         '''
       }
     }
