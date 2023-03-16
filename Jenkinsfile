@@ -24,8 +24,8 @@ pipeline {
           AksLocation=eastus2
           az aks get-credentials -g $RGROUP -n $AKS 
           kubectl cluster-info
-          helm lint --debug app/Chart.yaml --strict --values ./app/env/values-qa.yaml
-          helm upgrade app app/ --install --create-namespace -n qa -f ./app/env/values-qa.yaml
+          helm lint --debug $WORKSPACE/app/Chart.yaml --strict --values $WORKSPACE/app/env/values-qa.yaml
+          helm upgrade app app/ --install --create-namespace -n qa -f $WORKSPACE/app/env/values-qa.yaml
         '''
       }
     }
