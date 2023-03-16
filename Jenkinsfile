@@ -37,11 +37,11 @@ pipeline {
                 returnStdout: true
             ).trim()
             echo "svc ip: ${SVC_IP}"
+            
+            echo "Smoke Test"
+            curl "https://${env.SVC_IP}:8080"
+
         }
-        sh '''
-          echo "Smoke Test"
-          curl https://${env.SVC_IP}:8080
-        '''
       }
     }
   }
