@@ -15,5 +15,16 @@ pipeline {
         '''
       }
     }
+    stage('Deploy') {
+      steps {
+        sh '''
+          echo "Deploy"
+          kubectl cluster-info
+          helm init
+          helm lint --debug Chart.yaml --strict --values env/values-qa.yaml
+          helm upgrade app app/ --install --create-namespace -n qa -f values-qa.yaml
+        '''
+      }
+    }
   }
 } //pipeline
