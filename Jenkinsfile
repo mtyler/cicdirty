@@ -31,17 +31,21 @@ pipeline {
     }
     stage('Smoke Test') {
       steps {
-        script {
-           SVC_IP = sh (
-                script: 'kubectl get svc --namespace qa app --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"',
-                returnStdout: true
-            ).trim()
-            echo "svc ip: ${SVC_IP}"
-            
-            echo "Smoke Test"
-            sh 'curl https://${env.SVC_IP}:8080' 
-
-        }
+        //script {
+        //   SVC_IP = sh (
+        //        script: 'kubectl get svc --namespace qa app --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"',
+        //        returnStdout: true
+        //    ).trim()
+        //    echo "svc ip: ${SVC_IP}"
+        //    
+        //    echo "Smoke Test"
+        //    sh 'curl https://${SVC_IP}:8080' 
+//
+        //}
+        sh '''
+          SVC_IP = kubectl get svc --namespace qa app --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"
+          curl https://${SVC_IP}:8080 
+        '''
       }
     }
   }
