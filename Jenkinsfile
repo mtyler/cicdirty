@@ -19,6 +19,10 @@ pipeline {
       steps {
         sh '''
           echo "Deploy"
+          RGROUP=BBW-DEV
+          AKS=BBW-AKS-1
+          AksLocation=eastus2
+          az aks get-credentials -g $RGROUP -n $AKS 
           kubectl cluster-info
           helm init
           helm lint --debug Chart.yaml --strict --values env/values-qa.yaml
