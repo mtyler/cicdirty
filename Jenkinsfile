@@ -16,8 +16,7 @@ pipeline {
         sh '''
           echo "Build and Push"
           printenv
-          qa_url = kubectl get svc --namespace qa poc --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"
-          docker build -t $ACR/$SERVICE:$TAG $WORKSPACE/$SERVICE --build-arg BUILD=$BUILD_NUMBER --build-arg QA=$qa_url
+          docker build -t $ACR/$SERVICE:$TAG $WORKSPACE/$SERVICE --build-arg BUILD=$BUILD_NUMBER --build-arg QA=$(kubectl get svc --namespace qa poc --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}")
           docker login -u bbwcr -p $BBWCR_KEY $ACR
           docker push $ACR/$SERVICE:$TAG
         '''
