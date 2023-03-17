@@ -28,7 +28,7 @@ pipeline {
           echo "Deploy"
           az aks get-credentials -g $RGROUP -n $AKS 
           kubectl cluster-info
-          helm upgrade $SERVICE $SERVICE/ --install --create-namespace -n qa -f $WORKSPACE/app/env/values-qa.yaml --set image.tag=$TAG
+          helm upgrade $SERVICE $SERVICE/ --install --create-namespace -n qa -f $WORKSPACE/app/env/values-qa.yaml --set image.tag=$TAG --set image.imagePullPolicy=Always
         '''
       }
     }
