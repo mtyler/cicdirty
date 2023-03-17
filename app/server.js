@@ -10,7 +10,7 @@ console.log( process.env );
 // App
 const app = express();
 app.get('/', (req, res) => {
-  var message = `<p>Build Number: ${process.env.BUILD}<br><a href='http://20.169.220.3:8080/'>Jenkins Server<a/><br>Prod url:<br>QA url:<br>`
+  var message = `<p>Build Number: ${process.env.BUILD}<br><a href='http://20.169.220.3:8080/'>Jenkins Server<a/><br><a href='${process.env.PROD}'>Production Service<a/><br><a href='${process.env.QA}'>QA Service<a/><br>`
   res.status(200).send(message);
 });
 
