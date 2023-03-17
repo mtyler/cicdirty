@@ -1,5 +1,12 @@
 pipeline {
   agent any
+  environment {
+      ACR='bbwcr.azurecr.io'
+      RGROUP='BBW-DEV'
+      AKS='BBW-AKS-1'
+      SERVICE='app'
+      TAG="${JOB_BASE_NAME}-${BUILD_NUMBER}"
+  }
   stages {
     stage('Build and Push') {
       options {
@@ -8,10 +15,11 @@ pipeline {
       steps {
         sh '''
           echo "Build and Push"
-          ACR=bbwcr.azurecr.io
-          docker build -t $ACR/app:$BUILD_NUMBER $WORKSPACE/app
+          printenv
+          qa_url = kubectl get svc --namespace qa poc --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"
+          docker build -t $ACR/$SERVICE:$TAG $WORKSPACE/$SERVICE --build-arg BUILD=$BUILD_NUMBER --build-arg QA=$qa_url
           docker login -u bbwcr -p $BBWCR_KEY $ACR
-          docker push $ACR/app:$BUILD_NUMBER
+          docker push $ACR/$SERVICE:$TAG
         '''
       }
     }
@@ -19,12 +27,9 @@ pipeline {
       steps {
         sh '''
           echo "Deploy"
-          RGROUP=BBW-DEV
-          AKS=BBW-AKS-1
           az aks get-credentials -g $RGROUP -n $AKS 
           kubectl cluster-info
-          mkdir -p $WORKSPACE/build
-          helm upgrade app app/ --install --create-namespace -n qa -f $WORKSPACE/app/env/values-qa.yaml --set image.tag=$BUILD_NUMBER
+          helm upgrade $SERVICE $SERVICE/ --install --create-namespace -n qa -f $WORKSPACE/app/env/values-qa.yaml --set image.tag=$TAG --set image.pullPolicy=Always
         '''
       }
     }
@@ -33,7 +38,7 @@ pipeline {
         script {
           echo "Smoke Test"
           RESULT = sh (
-                script: 'curl http://$(kubectl get svc --namespace qa app --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"):8080',
+                script: 'curl http://$(kubectl get svc --namespace qa $SERVICE --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"):8080',
                 returnStdout: true
             ).trim()
           echo "test result: ${RESULT}"
