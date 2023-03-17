@@ -15,6 +15,7 @@ pipeline {
       steps {
         sh '''
           echo "Build and Push"
+          printenv
           docker build -t $ACR/$SERVICE:$TAG $WORKSPACE/$SERVICE --build-arg BUILD=$BUILD_NUMBER
           docker login -u bbwcr -p $BBWCR_KEY $ACR
           docker push $ACR/$SERVICE:$TAG
