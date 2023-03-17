@@ -1,19 +1,17 @@
 'use strict';
-
+require('dotenv').config();
 const express = require('express');
 
 // Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
 
+console.log( process.env );
 // App
 const app = express();
 app.get('/', (req, res) => {
-  res.send('Hello World\n\n' /
-           'This is build number: ' + process.env.BUILD + '\n\n' /
-           'Jenkins server: http://20.169.220.3:8080/\n\n' /
-           '  Prod url:\n\n' /
-           '    QA url:\n\n');
+  var message = `<p>Build Number: ${process.env.BUILD}<br><a href='http://20.169.220.3:8080/'>Jenkins Server<a/><br>Prod url:<br>QA url:<br>`
+  res.status(200).send(message);
 });
 
 app.listen(PORT, HOST, () => {
