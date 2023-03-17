@@ -5,7 +5,7 @@ pipeline {
       RGROUP='BBW-DEV'
       AKS='BBW-AKS-1'
       SERVICE='app'
-      TAG="${GIT_BRANCH}-${BUILD_NUMBER}"
+      TAG="${JOB_BASE_NAME}-${BUILD_NUMBER}"
   }
   stages {
     stage('Build and Push') {
