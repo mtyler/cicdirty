@@ -5,7 +5,7 @@ pipeline {
       RGROUP='BBW-DEV'
       AKS='BBW-AKS-1'
       SERVICE='app'
-      TAG=$JOB_NAME-$BUILD_NUMBER
+      TAG=$JOB_NAME + '-' + $BUILD_NUMBER
   }
   stages {
     stage('Build and Push') {
