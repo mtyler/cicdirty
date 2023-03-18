@@ -6,6 +6,8 @@ ARG BUILD=0
 ENV BUILD=$BUILD
 ARG QA=0
 ENV QA=$QA
+ARG PROD=0
+ENV PROD=$PROD
 RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production
