@@ -11,7 +11,7 @@ console.log( process.env );
 const app = express();
 app.get('/', (req, res) => {
   var message = `<p>BBW Proof of Concept<p><p>Dashboard Version: ${process.env.BUILD}<br> \
-                 <br>Jenkins Server: <a href='http://20.169.220.3:8080/blue/organizations/jenkins/bbw-azure-poc/activity'>http://20.169.220.3:8080/<a/><br> \
+                 <br>Jenkins Server: <a href='http://20.169.220.3:8080/blue/organizations/jenkins/bbw-azure-poc/branches'>http://20.169.220.3:8080/<a/><br> \
                  <br>QA Service: <a href='http://${process.env.QA}'>${process.env.QA}<a/><br> \
                  <br>Production Service: <a href='http://${process.env.PROD}'>${process.env.PROD}<a/><br>`
   res.status(200).send(message);
