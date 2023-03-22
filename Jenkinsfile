@@ -4,7 +4,7 @@ pipeline {
       ACR='bbwcr.azurecr.io'
       RGROUP='BBW-DEV'
       AKS='BBW-AKS-1'
-      SERVICE='poc'
+      SERVICE='app'
       TAG="${JOB_BASE_NAME}-${BUILD_NUMBER}"
   }
   stages {
