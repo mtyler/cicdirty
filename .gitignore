@@ -1,3 +1,4 @@
 cicdirty
 cicdirty.pub
 **/package-lock.json
+**/node_modules
