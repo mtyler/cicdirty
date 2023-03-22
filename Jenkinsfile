@@ -15,6 +15,7 @@ pipeline {
       steps {
         sh '''
           echo "Build and Push"
+          az aks get-credentials -g $RGROUP -n $AKS 
           docker build -t $ACR/$SERVICE:$TAG $WORKSPACE/$SERVICE --build-arg BUILD=$TAG --build-arg QA=$(kubectl get svc --namespace qa $SERVICE --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"):8080 --build-arg PROD=$(kubectl get svc --namespace prod $SERVICE --template "{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"):8080
           docker login -u bbwcr -p $BBWCR_KEY $ACR
           docker push $ACR/$SERVICE:$TAG
@@ -26,7 +27,6 @@ pipeline {
         sh '''
           echo "Deploy"
           az aks get-credentials -g $RGROUP -n $AKS 
-          kubectl cluster-info
           helm upgrade $SERVICE $SERVICE/ --install --create-namespace -n qa -f $WORKSPACE/app/env/values-qa.yaml --set image.tag=$TAG --set image.pullPolicy=Always
         '''
       }
