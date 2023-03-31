@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
                  <br>QA Service:<br>IP: <a href='http://${process.env.QA}'>${process.env.QA}<a/><br> \
                  <br>Build: <a href='http://${process.env.QA}/healthz'>/healthz<a/><br> \
                  <br>Production Service:<br>IP:<a href='http://${process.env.PROD}'>${process.env.PROD}<a/><br> \
-                 <br>Build: <a href='http://${process.env.QA}/healthz'>/healthz<a/><br>`
+                 <br>Build: <a href='http://${process.env.PROD}/healthz'>/healthz<a/><br>`
   res.status(200).send(message);
 });
 
